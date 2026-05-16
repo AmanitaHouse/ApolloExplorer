@@ -1,12 +1,10 @@
-QT       += core gui network
+QT       += core gui network widgets
 TARGET=ApolloExplorer
 
 linux: QT += x11extras
 linux: LIBS += -lX11
 
 win32:RC_ICONS += icons/FirebirdHW.ico
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 CONFIG += c++17
 QMAKE_CXXFLAGS += -O0 -g
@@ -26,9 +24,8 @@ win32:equals(QMAKE_HOST.os, Windows) {
     QMAKE_POST_LINK += cmd /c if exist $$quote($$DEPLOY_DEBUG_EXE) $$WINDEPLOYQT --compiler-runtime $$quote($$DEPLOY_DEBUG_EXE)$$escape_expand(\\n\\t)cmd /c if exist $$quote($$DEPLOY_RELEASE_EXE) $$WINDEPLOYQT --compiler-runtime $$quote($$DEPLOY_RELEASE_EXE)
 }
 
-# You can make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-#DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
+# Fail the build on APIs Qt marked deprecated before this version (6.11.1 => 0x060B01). Adjust when upgrading Qt.
+DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060B01
 
 INCLUDEPATH += ../
 
