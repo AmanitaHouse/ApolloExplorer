@@ -1,10 +1,10 @@
 #!/bin/bash
-brew install qt5
+brew install qt
 
 rm -r -f .qmake.stash
 
 clear
-/opt/homebrew/opt/qt@5/bin/qmake -recursive
+qmake -recursive
 make clean
 make -j16
 make clean
