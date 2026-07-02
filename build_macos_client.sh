@@ -1,20 +1,36 @@
 #!/bin/bash
 
-brew install qt
-
-rm -r -f .qmake.stash
 clear
+brew install qt
+rm -r -f .qmake.stash
+cd acp
+make clean distclean
+cd ../AmigaIconReader
+make clean distclean
+cd ../Amiga/M
+make clean distclean
+cd ../ApolloExplorerPC
+make clean distclean
+cd ..
 
 qmake -recursive
-make clean
 make -j16
-make clean
 
-mkdir ApolloExplorerPC/ApolloExplorer.app/Contents/Resources
-cp ApolloExplorerPC/icons/ApolloExplorer.icns ApolloExplorerPC/ApolloExplorer.app/Contents/Resources/ 
+#mkdir ApolloExplorerPC/ApolloExplorer.app/Contents/Resources
+#cp ApolloExplorerPC/icons/ApolloExplorer.icns ApolloExplorerPC/ApolloExplorer.app/Contents/Resources/ 
 
-rm -r -f /Applications/ApolloExplorer.app
-cp -r -f ApolloExplorerPC/ApolloExplorer.app /Applications/ApolloExplorer.app
+#rm -r -f /Applications/ApolloExplorer.app
+#cp -r -f ApolloExplorerPC/ApolloExplorer.app /Applications/ApolloExplorer.app
 
-rm -r -f .qmake.stash Makefile ApolloExplorerPC/Makefile ApolloExplorerPC/qmake_qmake_qm_files.qrc
-rm -r -f acp/Makefile AmigaIconReader/Makefile 
+clear
+brew install qt
+rm -r -f .qmake.stash
+cd acp
+make clean 
+cd ../AmigaIconReader
+make clean 
+cd ../Amiga/M
+make clean 
+cd ../ApolloExplorerPC
+make clean 
+cd ..
