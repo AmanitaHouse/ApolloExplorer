@@ -10,6 +10,7 @@ extern "C"
 #include <linux/input.h>
 #include <fcntl.h>
 #include <X11/Xlib.h>
+#include <xcb/xcb.h>
 #undef Bool
 }
 #endif
