@@ -3,19 +3,20 @@ echo ""
 echo -e "\033[1m\033[37m########## \033[31mApollo\033[1;30mExplorer MacOS Client - Release 1.3 \033[37m###########\033[0m\033[36m"
 echo ""
 
-echo -e "\033[1m\033[37m1. Checking Prerequisites\033[0m"
+echo -e "\033[1m\033[37m1. Checking Prerequisites\033[1;30m"
 
 qmake
 if [ $? -ne 0 ]; then
-    echo -e "\033[1m\033[31mQt qmake command not found\033[0m"
+    echo -e "\033[1m\033[31mQt qmake command not found\033[1;30m"
     printf 'Do you want to install Qt 6 from homebrew? (y/n):'
     read answer
     if [ "$answer" != "${answer#[Yy]}" ] ;then 
+        echo -e "Installing Qt 6 from homebrew\033[1;30m"
         brew install -qy qt@6 >>log.txt 2>>log.txt
         exit 1
     else 
-        echo -e "\033[1m\033[31mPlease install Qt 6 (homebrew, Qt online installer or build from source)\033[0m"
-        echo -e "\033[1m\033[31mMake sure qmake is in your \$PATH variable\033[0m"
+        echo -e "Please install Qt 6 (homebrew, Qt online installer or build from source)"
+        echo -e "Make sure qmake is in your \$PATH variable"
         exit 1
     fi
 fi
