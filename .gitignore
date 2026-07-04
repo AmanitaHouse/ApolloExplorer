@@ -13,3 +13,9 @@ ApolloExplorerPC/qmake_qmake_qm_files.qrc
 # Qt Creator user-specific project settings
 *.pro.user
 *.pro.user.*
+log.txt
+acp/acp
+acp/acp
+ApolloExplorerPC/.DS_Store
+ApolloExplorerPC/.DS_Store
+.qmake.stash

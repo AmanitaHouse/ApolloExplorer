@@ -521,12 +521,12 @@ static void discoveryThreadBody()
 		dbglog( "[discoverySocket] Opened disk object\n" );
 
 		//Get the OS Name and Version from Tooltypes
-		STRPTR osname = FindToolType( diskObject->do_ToolTypes, (STRPTR)"osname" );
+		STRPTR osname = (STRPTR)FindToolType( (CONST_STRPTR*)diskObject->do_ToolTypes, (CONST_STRPTR)"osname" );
 		if( osname )
 		{
 			dbglog( "[discoverySocket] ToolTypes osname: %s\n", osname );
 			strncpy( announceMessage->osName, osname, sizeof( announceMessage->name ) );
-			STRPTR osversion = FindToolType( diskObject->do_ToolTypes, "osversion" );
+			STRPTR osversion = (STRPTR)FindToolType( (CONST_STRPTR*)diskObject->do_ToolTypes, (CONST_STRPTR)"osversion" );
 			if( osversion )
 			{
 				dbglog( "[discoverySocket] ToolTypes osversion: %s\n", osversion );
@@ -549,7 +549,7 @@ static void discoveryThreadBody()
 			}
 		}
 
-		STRPTR hardware = FindToolType( diskObject->do_ToolTypes, (STRPTR)"hardware" );
+		STRPTR hardware = FindToolType( (CONST_STRPTR*)diskObject->do_ToolTypes, (CONST_STRPTR)"hardware" );
 		if( hardware )
 		{
 			dbglog( "[discoverySocket] ToolTypes hardware: %s\n", hardware );
@@ -564,7 +564,7 @@ static void discoveryThreadBody()
 			}
 		}
 
-		STRPTR name = FindToolType( diskObject->do_ToolTypes, (STRPTR)"name" );
+		STRPTR name = (STRPTR)FindToolType( (CONST_STRPTR*)diskObject->do_ToolTypes, (CONST_STRPTR)"name" );
 		if( name )
 		{
 			dbglog( "[discoverySocket] ToolTypes Name: %s\n", name );

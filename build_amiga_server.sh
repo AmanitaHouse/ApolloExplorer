@@ -1,8 +1,14 @@
-#!/bin/bash
+printf '\33c\e[3J'
+echo ""
+echo -e "\033[1m\033[37m########## \033[31mApollo\033[1;30mExplorer Amiga Server - Release 1.3 \033[37m###########\033[0m\033[36m"
+echo ""
 
 cd Amiga
-make clean
-make all -j16
+echo -e "\033[1m\033[37m1. Clean House\033[0m"
+make clean >log.txt 2>>log.txt
+echo -e "\033[1m\033[37m2. Make Project\033[0m"
+make all -j16 >>log.txt 2>>log.txt
+echo ""
 cd ..
 
 

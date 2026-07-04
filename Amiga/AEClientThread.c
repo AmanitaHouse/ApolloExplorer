@@ -371,7 +371,7 @@ static void clientThreadBody()
 
 	struct Library *SocketBase = NULL;
 	struct sockaddr_in addr __attribute__((aligned(4))) ;
-	int returnCode = 0;
+	LONG returnCode = 0;
 	unsigned short newPort = g_NextClientPort++;		//Here we will also store our client port
 
 	//saftey check for the port number
@@ -553,7 +553,8 @@ static void clientThreadBody()
 	//Get current buffer sizes
 	ULONG sendBufferSize = 0;
 	ULONG receiveBufferSize = 0;
-	ULONG varLen = sizeof( sendBufferSize );
+	socklen_t varLen = sizeof( sendBufferSize );
+	
 	returnCode = getsockopt( newClientSocket, IPPROTO_TCP, SO_RCVBUF, &receiveBufferSize, &varLen );
 	returnCode = getsockopt( newClientSocket, IPPROTO_TCP, SO_SNDBUF, &sendBufferSize, &varLen );
 	dbglog( "[child] Buffer sizes %lu (snd) %lu (rcv)\n", sendBufferSize, receiveBufferSize );
