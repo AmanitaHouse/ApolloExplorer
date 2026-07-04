@@ -1,22 +1,23 @@
+#!/bin/bash
+
 printf '\33c\e[3J'
 echo ""
 echo -e "\033[1m\033[37m########## \033[31mApollo\033[1;30mExplorer MacOS Client - Release 1.3 \033[37m###########\033[0m\033[36m"
 echo ""
 
-echo -e "\033[1m\033[37m1. Checking Prerequisites\033[1;30m"
+echo -e "\033[1m\033[37m1. Checking Prerequisites\033[0;30m"
 
 qmake
 if [ $? -ne 0 ]; then
-    echo -e "\033[1m\033[31mQt qmake command not found\033[1;30m"
+    echo -e "\033[1m\033[31mQt qmake command not found\033[0;30m"
     printf 'Do you want to install Qt 6 from homebrew? (y/n):'
     read answer
     if [ "$answer" != "${answer#[Yy]}" ] ;then 
-        echo -e "Installing Qt 6 from homebrew\033[1;30m"
+        echo -e "Installing Qt 6 from homebrew\033[0;30m"
         brew install -qy qt@6 >>log.txt 2>>log.txt
-        exit 1
     else 
         echo -e "Please install Qt 6 (homebrew, Qt online installer or build from source)"
-        echo -e "Make sure qmake is in your \$PATH variable"
+        echo -e "Make sure qmake is in your \$PATH variable\033[0m"
         exit 1
     fi
 fi
@@ -52,7 +53,7 @@ cd ../ApolloExplorerPC
 make clean >>log.txt 2>>log.txt
 cd ..
 
-echo -e "\033[1;30m"
+echo -e "\033[0;30m"
 printf 'Proceeed with Signing, Notarization and Packaging?\nRequires Apple Developer Team-ID in ${APPLETEAMID}\nChoose No unless you understand the question (y/n)? '
 read answer
 if [ "$answer" != "${answer#[Yy]}" ] ;then 
@@ -65,10 +66,10 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     echo -e "\033[1m\033[37mB. ZIP ApolloExplorer.app Bundle (keep Symlinks intact)\033[0m"
     zip -r -y ApolloExplorer.zip ApolloExplorer.app >>log.txt 2>>log.txt
     
-    echo -e "\033[1m\033[37mC. Notarize ApolloExplorer.app Bundle with Apple Developer ID (${APPLETEAMID})\033[1;30m\n"
+    echo -e "\033[1m\033[37mC. Notarize ApolloExplorer.app Bundle with Apple Developer ID (${APPLETEAMID})\033[0;30m\n"
     xcrun notarytool submit ApolloExplorer.zip --keychain-profile "AC_PASSWORD" --wait   
 
-    echo -e "\033[1m\033[37mD. Staple ApolloExplorer.app Bundle with Notarization Ticket\033[1;30m\n"
+    echo -e "\033[1m\033[37mD. Staple ApolloExplorer.app Bundle with Notarization Ticket\033[0;30m\n"
     xcrun stapler staple ApolloExplorer.app  
 
     echo -e "\n\033[1m\033[37mE. Cleanup & Finish\033[0m\n"
@@ -77,4 +78,4 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
 fi
 
 cp icons/Icon? ApolloExplorerPC/ApolloExplorer.app
-echo ""
+echo -e "\033[0m"

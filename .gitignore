@@ -19,3 +19,5 @@ acp/acp
 ApolloExplorerPC/.DS_Store
 ApolloExplorerPC/.DS_Store
 .qmake.stash
+AmigaIconReader/AmigaIconReader.app/Contents/Info.plist
+AmigaIconReader/AmigaIconReader.app/Contents/PkgInfo
