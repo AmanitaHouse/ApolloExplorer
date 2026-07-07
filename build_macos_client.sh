@@ -96,6 +96,3 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     cd ..
 fi
 
-unzip icons/Icon?.zip -d icons 
-cp icons/Icon? ApolloExplorerPC/ApolloExplorer.app
-echo -e "\033[0m"
