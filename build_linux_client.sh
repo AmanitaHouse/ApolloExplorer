@@ -22,17 +22,11 @@ sudo apt install -qy qt6-*dev* >>log.txt 2>>log.txt
 
 echo -e "\033[1m\033[37m1. Clean House\033[0m"
 rm -r -f .qmake.stash >log.txt 2>>log.txt
-cd acp
-make clean distclean >>log.txt 2>>log.txt
-cd ../AmigaIconReader
-make clean distclean >>log.txt 2>>log.txt
-cd ../Amiga
-make clean distclean >>log.txt 2>>log.txt
-cd ../ApolloExplorerPC
-make clean distclean >>log.txt 2>>log.txt
-rm -r -f ApolloExplorer.zip >>log.txt 2>>log.txt
-rm -r -f ApolloExplorer.dmg >>log.txt 2>>log.txt
-cd ..
+
+make distclean >>log.txt 2>>log.txt
+rm -r -f ApolloExplorerPC/ApolloExplorer.zip >>log.txt 2>>log.txt
+rm -r -f ApolloExplorerPC/ApolloExplorer.dmg >>log.txt 2>>log.txt
+rm -r -f ApolloExplorer-Linux >>log.txt 2>>log.txt
 
 echo -e "\033[1m\033[37m2. QT6 Create Linux Project\033[0m"
 qmake6 -recursive >>log.txt 2>>log.txt
@@ -47,19 +41,13 @@ if [ $? -eq 0 ]; then
 fi
 
 echo -e "\033[1m\033[37m4. Install Linux Project\033[0m"
-sudo mkdir -p /opt/ApolloExplorer/bin
-sudo cp ApolloExplorerPC/ApolloExplorer /opt/ApolloExplorer/bin/ApolloExplorer
-sudo cp ApolloExplorerPC/ApolloExplorer.desktop /usr/share/applications/ApolloExplorer.desktop
+
+
+mkdir -p ApolloExplorer-Linux
+mv ApolloExplorerPC/ApolloExplorer ApolloExplorer-Linux/ApolloExplorer
+mv acp/acp ApolloExplorer-Linux/acp
 
 echo -e "\033[1m\033[37m5. Clean Project\033[0m"
-cd acp
-make clean >>log.txt 2>>log.txt
-cd ../AmigaIconReader
-make clean >>log.txt 2>>log.txt
-cd ../Amiga
-make clean >>log.txt 2>>log.txt
-cd ../ApolloExplorerPC
-make clean >>log.txt 2>>log.txt
-cd ..
+make distclean >>log.txt 2>>log.txt
 
 echo -e "\033[0m"
