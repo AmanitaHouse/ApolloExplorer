@@ -31,14 +31,15 @@ fi
 echo -e "\033[1m\033[37m1. Clean House\033[0m"
 rm -r -f .qmake.stash >log.txt 2>>log.txt
 make clean distclean >>log.txt 2>>log.txt
+rm -r -f ApolloExplorer-macOS >>log.txt 2>>log.txt
 cd ApolloExplorerPC
 rm -r -f ApolloExplorer.zip >>log.txt 2>>log.txt
 rm -r -f ApolloExplorer.dmg >>log.txt 2>>log.txt
 cd ..
 
-echo -e "\033[1m\033[37m2. QT6 Create macOS Project\033[0m\033[30m"
+echo -e "\033[1m\033[37m2. Create macOS Project\033[0m\033[30m"
 
-printf 'Do you want to create macOS Universal bundle (Intel + Silicon)?:\n\033[1mIMPORTANT:\033[22m This requires a Qt 6 build with both x86_64 and arm64 support (y/n)'
+printf 'Do you want to create macOS Universal bundle (Intel + Silicon)?:\n\033[1mIMPORTANT:\033[22m This requires a Qt 6 build with both x86_64 and arm64 support (y/n) '
 read answer
 if [ "$answer" != "${answer#[Yy]}" ] ;then
     qmake -recursive QMAKE_APPLE_DEVICE_ARCHS="x86_64 arm64" MACOSX_DEPLOYMENT_TARGET="12.7.6" >>log.txt 2>>log.txt
@@ -55,19 +56,7 @@ if [ $? -eq 0 ]; then
     exit 1
 fi
 
-echo -e "\033[1m\033[37m4. Clean Project\033[0m"
-cd acp
-make clean >>log.txt 2>>log.txt
-cd ../AmigaIconReader
-make clean >>log.txt 2>>log.txt
-cd ../Amiga
-make clean >>log.txt 2>>log.txt
-cd ../ApolloExplorerPC
-make clean >>log.txt 2>>log.txt
-cd ..
-
-echo -e "\033[0;30m"
-printf 'Proceeed with Signing, Notarization and Packaging?\nRequires Apple Developer Team-ID in ${APPLETEAMID}\nChoose No unless you understand the question (y/n)? '
+echo -e "\033[0;30mProceeed with Signing, Notarization and Packaging?\nRequires Apple Developer Team-ID in ${APPLETEAMID}\nChoose No unless you understand the question (y/n)? "
 read answer
 if [ "$answer" != "${answer#[Yy]}" ] ;then 
     echo ""
@@ -90,7 +79,11 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     cd ..
 fi
 
+echo -e "\033[1m\033[37m4. Install macOS Project\033[0m"
 mkdir -p ApolloExplorer-macOS
 mv ApolloExplorerPC/ApolloExplorer.app ApolloExplorer-macOS/
 mv acp/acp ApolloExplorer-macOS/
+
+echo -e "\033[1m\033[37m5. Clean macOS Project\033[0m"
+make distclean >>log.txt 2>>log.txt
 echo -e "\033[0m"
