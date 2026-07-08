@@ -35,9 +35,6 @@ try {
     if($Answer -eq "n") {exit}
     Write-Host ""
     Write-Host ""
-    Write-Host ""
-    Write-Host ""
-    Write-Host ""
     Write-Host "* Installing QT6 FrameWork (qt6.11.1-essentials-dev) to $QT6InstallPath"
     Invoke-WebRequest https://download.qt.io/official_releases/online_installers/qt-online-installer-windows-x64-online.exe -O qt-online-installer-windows-x64-online.exe | Out-Null
     .\qt-online-installer-windows-x64-online.exe --root $QT6InstallPath --accept-licenses --default-answer --confirm-command install qt6.11.1-essentials-dev | Out-Null
