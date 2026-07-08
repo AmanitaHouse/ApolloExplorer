@@ -31,7 +31,7 @@ fi
 echo -e "\033[1m\033[37m1. Clean House\033[0m"
 rm -r -f .qmake.stash >log.txt 2>>log.txt
 make clean distclean >>log.txt 2>>log.txt
-cd ../ApolloExplorerPC
+cd ApolloExplorerPC
 rm -r -f ApolloExplorer.zip >>log.txt 2>>log.txt
 rm -r -f ApolloExplorer.dmg >>log.txt 2>>log.txt
 cd ..
@@ -90,3 +90,7 @@ if [ "$answer" != "${answer#[Yy]}" ] ;then
     cd ..
 fi
 
+mkdir -p ApolloExplorer-macOS
+mv ApolloExplorerPC/ApolloExplorer.app ApolloExplorer-macOS/
+mv acp/acp ApolloExplorer-macOS/
+echo -e "\033[0m"
