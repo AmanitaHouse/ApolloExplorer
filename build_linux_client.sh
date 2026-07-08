@@ -42,12 +42,11 @@ fi
 
 echo -e "\033[1m\033[37m4. Install Linux Project\033[0m"
 
-
 mkdir -p ApolloExplorer-Linux
 mv ApolloExplorerPC/ApolloExplorer ApolloExplorer-Linux/ApolloExplorer
+cp ApolloExplorerPC/ApolloExplorer.desktop ApolloExplorer-Linux/ApolloExplorer.desktop
 mv acp/acp ApolloExplorer-Linux/acp
 
 echo -e "\033[1m\033[37m5. Clean Project\033[0m"
 make distclean >>log.txt 2>>log.txt
-
 echo -e "\033[0m"
