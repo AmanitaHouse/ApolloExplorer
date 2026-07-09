@@ -64,6 +64,14 @@ qmake -recursive -config release  1>$null 2>$null 3>$null
 Write-Host "${Bold}${White}3. Make Windows Project${Grey}${BoldReset}"
 mingw32-make.exe -j8 1>$null 2>$null 3>$null
 
+$ERROR = Select-String -Path log.txt -Pattern "error" -SimpleMatch
+
+if ($ERROR -ne $null)
+{
+    Write-Host "${Bold}${Red}Error(s) found, check log.txt${Grey}${BoldReset}"
+    exit
+}
+
 Write-Host "${Bold}${White}4. Install Windows Project${Grey}${BoldReset}"
 mkdir ApolloExplorer-Windows >$null 2>$null 3>$null
 Move-Item .\acp\release\acp.exe .\ApolloExplorer-Windows\acp.exe -Force 1>$null 2>$null 3>$null
@@ -78,6 +86,6 @@ Remove-Item -Recurse -Force .\ApolloExplorerPC\debug\ 1>$null 2>$null 3>$null
 Remove-Item -Recurse -Force .\ApolloExplorerPC\release\ 1>$null 2>$null 3>$null
 Remove-Item -Recurse -Force .\AmigaIconReader\debug\ 1>$null 2>$null 3>$null
 Remove-Item -Recurse -Force .\AmigaIconReader\release\ 1>$null 2>$null 3>$null
-Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc
+Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc  1>$null 2>$null 3>$null  
 
 

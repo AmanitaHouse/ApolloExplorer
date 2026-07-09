@@ -54,7 +54,7 @@ make -j16 >>log.txt 2>>log.txt
 
 grep -i "error" log.txt
 if [ $? -eq 0 ]; then
-    echo -e "\033[1m\033[31mError(s) found in log.txt\033[0m"
+    echo -e "\033[1m\033[Error(s) found, check log.txt\033[0m"
     exit 1
 fi
 
