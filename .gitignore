@@ -26,3 +26,9 @@ ApolloExplorerPC/.DS_Store
 ApolloExplorer-Windows
 ApolloExplorer-macOS
 ApolloExplorer-Linux
+# Generated build/test artifacts
+artifacts/
+log_*.txt
+**/log_*.txt
+# Local installers
+qt-online-installer-*.exe

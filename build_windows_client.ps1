@@ -12,7 +12,7 @@ $Grey       = "$([char]27)[30m"
 
 Clear-Host
 Write-Host ""
-Write-Host "${Bold}${White}########## ${Red}Apollo${Grey}Explorer Windows Client - Release 1.3 ${White}###########"
+Write-Host "${Bold}${White}########## ${Red}Apollo${Grey}Explorer Windows Client - Release 1.4 ${White}###########"
 Write-Host ""
 Write-Host "${Bold}${White}0. Checking Prerequisites${Grey}${BoldReset}"
 
@@ -25,6 +25,30 @@ $env:Path += $QT6CommandPath
 $QT6ToolsPath = Join-Path $QT6InstallPath "\Tools\mingw1310_64\bin"  
 $env:Path += ";"
 $env:Path += $QT6ToolsPath
+
+# build log artifacts
+$ArtifactsPath = Join-Path $PSScriptRoot "artifacts"
+New-Item -ItemType Directory -Path $ArtifactsPath -Force | Out-Null
+$LogErrorsPath = Join-Path $ArtifactsPath "log_errors.txt"
+$LogWarningsPath = Join-Path $ArtifactsPath "log_warnings.txt"
+$LogSuccessPath = Join-Path $ArtifactsPath "log_success.txt"
+
+# clear or create build log artifacts
+if (Test-Path $LogErrorsPath) {
+    Clear-Content -Path $LogErrorsPath -Force
+} else {
+    New-Item -ItemType File -Path $LogErrorsPath -Force | Out-Null
+}
+if (Test-Path $LogWarningsPath) {
+    Clear-Content -Path $LogWarningsPath -Force
+} else {
+    New-Item -ItemType File -Path $LogWarningsPath -Force | Out-Null
+}
+if (Test-Path $LogSuccessPath) {
+    Clear-Content -Path $LogSuccessPath -Force
+} else {
+    New-Item -ItemType File -Path $LogSuccessPath -Force | Out-Null
+}
 
 try {
     Get-Command "qmake" -ErrorAction Stop | Out-Null
@@ -48,43 +72,43 @@ try {
 }
 
 Write-Host "${Bold}${White}1. Clean House${Grey}${BoldReset}"
-mingw32-make.exe distclean 1>log_succes.txt 2>log_errors.txt 3>log_warnings.txt 
-Remove-Item -Recurse -Force .\acp\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\acp\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\ApolloExplorerPC\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\ApolloExplorerPC\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\AmigaIconReader\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\AmigaIconReader\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\ApolloExplorer-Windows 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc  1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
+mingw32-make.exe distclean 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath 
+Remove-Item -Recurse -Force .\acp\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\acp\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\ApolloExplorerPC\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\ApolloExplorerPC\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\AmigaIconReader\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\AmigaIconReader\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\ApolloExplorer-Windows 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc  1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
 
 Write-Host "${Bold}${White}2. Create Windows Project${Grey}${BoldReset}"
-qmake -recursive -config release  1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
+qmake -recursive -config release  1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
 
 Write-Host "${Bold}${White}3. Make Windows Project${Grey}${BoldReset}"
-mingw32-make.exe -j8 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
+mingw32-make.exe -j8 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
 
-$ErrorCheck = Select-String -Path log_errors.txt -Pattern "\berror\b"
+$ErrorCheck = Select-String -Path $LogErrorsPath -Pattern "\berror\b"
 
 if ($null -ne $ErrorCheck)
 {
-    Write-Host "${Bold}${Red}Error(s) found, check log_errors.txt${Grey}${BoldReset}"
+    Write-Host "${Bold}${Red}Error(s) found, check $LogErrorsPath${Grey}${BoldReset}"
 } else {
     Write-Host "${Bold}${White}4. Install Windows Project${Grey}${BoldReset}"
-    mkdir ApolloExplorer-Windows >>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-    Move-Item .\acp\release\acp.exe .\ApolloExplorer-Windows\acp.exe -Force 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-    Move-Item .\ApolloExplorerPC\release\ApolloExplorer.exe .\ApolloExplorer-Windows\ApolloExplorer.exe -Force 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-    windeployqt.exe --release .\ApolloExplorer-Windows\ApolloExplorer.exe 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
+    mkdir ApolloExplorer-Windows >>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+    Move-Item .\acp\release\acp.exe .\ApolloExplorer-Windows\acp.exe -Force 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+    Move-Item .\ApolloExplorerPC\release\ApolloExplorer.exe .\ApolloExplorer-Windows\ApolloExplorer.exe -Force 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+    windeployqt.exe --release .\ApolloExplorer-Windows\ApolloExplorer.exe 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
 }
 
 Write-Host "${Bold}${White}5. Clean Windows Project${Grey}${BoldReset}"
-mingw32-make.exe distclean 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\acp\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\acp\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\ApolloExplorerPC\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\ApolloExplorerPC\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\AmigaIconReader\debug\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item -Recurse -Force .\AmigaIconReader\release\ 1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt
-Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc  1>>log_succes.txt 2>>log_errors.txt 3>>log_warnings.txt  
+mingw32-make.exe distclean 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\acp\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\acp\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\ApolloExplorerPC\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\ApolloExplorerPC\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\AmigaIconReader\debug\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item -Recurse -Force .\AmigaIconReader\release\ 1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath
+Remove-Item .\ApolloExplorerPC\ApolloExplorer_resource.rc  1>>$LogSuccessPath 2>>$LogErrorsPath 3>>$LogWarningsPath  
 
 
